@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.section {
+  display: none;
+  padding: 50px;
+}
+
+.active {
+  display: block;
+}
+
+h1 { font-size: 2.5rem; }
+p { font-size: 1.2rem; }
+
+button {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/* Chat */
+.chat {
+  max-width: 400px;
+  margin: auto;
+  text-align: left;
+}
+
+.msg {
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+/* Slideshow */
+img {
+  width: 250px;
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+/* Buttons */
+.yes { background: #00ff9d; color: black; }
+.no { background: red; color: white; position: absolute; }
+
+/* Countdown */
+#countdown {
+  font-size: 2rem;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="bgmusic" autoplay loop>
+  <source src="your-song.mp3" type="audio/mp3">
+</audio>
+
+<!-- SECTION 1: CHAT -->
+<div class="section active" id="chatSection">
+<h1>Hey you ❤️</h1>
+<div class="chat" id="chatBox"></div>
+<button onclick="nextSection('memorySection')">Next ➡️</button>
+</div>
+
+<!-- SECTION 2: MEMORIES -->
+<div class="section" id="memorySection">
+<h1>Our Moments 📸</h1>
+<img id="slide" src="photo1.jpg">
+<br>
+<button onclick="nextSlide()">Next Photo</button>
+<br>
+<button onclick="nextSection('countdownSection')">Continue ➡️</button>
+</div>
+
+<!-- SECTION 3: COUNTDOWN -->
+<div class="section" id="countdownSection">
+<h1>Something important is coming... ⏳</h1>
+<div id="countdown"></div>
+<button onclick="nextSection('proposalSection')">Reveal 💖</button>
+</div>
+
+<!-- SECTION 4: PROPOSAL -->
+<div class="section" id="proposalSection">
+<h1>Will you be my girlfriend? 💖</h1>
+<button class="yes" onclick="yesClicked()">YES 😍</button>
+<button class="no" onmouseover="moveButton()">NO 😜</button>
+</div>
+
+<script>
+
+/* CHAT STORY */
+const messages = [
+  "Hey… I’ve been meaning to tell you something 😅",
+  "You’ve become really important to me",
+  "Every time I talk to you, my day gets better",
+  "And honestly… I think I like you ❤️"
+];
+
+let i = 0;
+function showMessage() {
+  if (i < messages.length) {
+    let div = document.createElement("div");
+    div.className = "msg";
+    div.innerText = messages[i];
+    document.getElementById("chatBox").appendChild(div);
+    i++;
+    setTimeout(showMessage, 1500);
+  }
+}
+showMessage();
+
+/* SECTION SWITCH */
+function nextSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* SLIDESHOW */
+const photos = ["photo1.jpg", "photo2.jpg", "photo3.jpg"];
+let index = 0;
+function nextSlide() {
+  index = (index + 1) % photos.length;
+  document.getElementById("slide").src = photos[index];
+}
+
+/* COUNTDOWN */
+let time = 5;
+let timer = setInterval(() => {
+  document.getElementById("countdown").innerText = time + " ❤️";
+  time--;
+  if (time < 0) clearInterval(timer);
+}, 1000);
+
+/* PROPOSAL */
+function yesClicked() {
+  document.body.innerHTML = "<h1>YAYYY ❤️🥹 I knew it!</h1>";
+}
+
+function moveButton() {
+  const btn = document.querySelector('.no');
+  btn.style.top = Math.random() * window.innerHeight + "px";
+  btn.style.left = Math.random() * window.innerWidth + "px";
+}
+
+/* AUTOPLAY FIX */
+document.body.addEventListener('click', () => {
+  document.getElementById("bgmusic").play();
+});
+
+</script>
+
+</body>
+</html>
